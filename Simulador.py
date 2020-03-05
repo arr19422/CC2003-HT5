@@ -1,6 +1,14 @@
+#UNIVERSIDAD DEL VALLE DE GUATEMALA
+#DIEGO DE JESUS ARREDONDO TURCIOS
+#19422
+#ALGORITMOS Y ESTRUCTURA DE DATOS
+#SECCION 30
+
+#importaciones
 import random
 import statistics
 import simpy
+
 #Funcion para la ejecucion de procesos
 def proceso(numProceso, env, cpu, ram, waiting, tiempoLlegada):
     global tiempoTotal #guarda el tiempo total de los procesos
@@ -8,7 +16,7 @@ def proceso(numProceso, env, cpu, ram, waiting, tiempoLlegada):
     yield env.timeout(tiempoLlegada)
     start = env.now
     end = 0
-    print ('Llegada del proceso %d en el momento %s ' % (numProceso, start))
+    print ('Llegada del proceso # %d en el momento %s ' % (numProceso, start))
     instrucciones = random.randint(1,10) #Cuantas instrucciones tiene el proceso
     ramProceso = random.randint(1,10) #Cuanta ram necesita el proceso
     with ram.get(ramProceso) as cola:
@@ -17,13 +25,13 @@ def proceso(numProceso, env, cpu, ram, waiting, tiempoLlegada):
         while instrucciones > 0:
             with cpu.request() as cola1: #Cpu con sus colas
                 yield cola1
-                print ('El proceso %d entra al CPU en %s' % (numProceso, env.now))
+                print ('El proceso # %d entra al CPU en %s' % (numProceso, env.now))
                 yield env.timeout(1)
                 instrucciones = instrucciones - 3 #Ejecuta solo 3 instrucciones
                 if instrucciones <= 0: #Interrumpe el proceso porque ya termino
                     instructions = 0
                     end = env.now 
-                    print ('El proceso %d sale del CPU en el momento %s' %(numProceso, end)) 
+                    print ('El proceso # %d sale del CPU en el momento %s' %(numProceso, end)) 
                 else: #Mira si pasa a waiting o a ready
                     opcion = random.randint(1,2)
                     if (opcion == 1):
@@ -56,7 +64,7 @@ env.run()
 promedio = tiempoTotal/totalInstrucciones
 desviacion = statistics.stdev(tiempoProcesos)
 
-
+#imprimir en pantalla resultados
 print ('Tiempo total', tiempoTotal)
 print('Promedio de tiempo por instruccion: ', promedio)
 print('Desviacion Estandar: ', desviacion)
